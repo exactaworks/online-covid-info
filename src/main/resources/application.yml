@@ -1,0 +1,35 @@
+# Application context-Path:
+server:
+  port: 9090
+  servlet:
+    context-path: /covid
+
+spring:
+  datasource:
+    url: jdbc:h2:./db_covid
+    username: ame_covid
+    password: ame_covid
+  flyway:
+    url: jdbc:h2:./db_covid
+    username: ame_covid
+    password: ame_covid
+    validate-on-migrate: false
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+
+#logging
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+
+  # Actuator configs
+management:
+  endpoints.web.base-path: /
+  endpoint.flyway.enabled: true
+
+partner:
+  host: https://disease.sh/v3/covid-19
+  endpoints:
+    all: all
