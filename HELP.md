@@ -52,24 +52,24 @@ As 4 próximas questões são features adicionais ao projeto e podem ser realiza
 diariamente. Então é desnecessário salvar no banco de dados se a requisição daquele dia já estiver no banco de dados para
 aquela região. 
 
-6. Crie um endpoint para buscar todas as informações do banco de dados. Elas devem vir ordenadas por data.
+6 - Crie um endpoint para buscar todas as informações do banco de dados. Elas devem vir ordenadas por data.
 
-7. Crie um endpoint para deletar informações do banco de dados de um determinado país, passado por parâmetro no endpoint
+7 - Crie um endpoint para deletar informações do banco de dados de um determinado país, passado por parâmetro no endpoint
 e independente de datas. Opcionalmente, seria ótimo se fosse um soft delete (também conhecido como false delete ou 
 exclusão lógica).
 
-8. Altere o endpoint. Permita ao usuário, opcionalmente, colocar um nome de país. Se ele colocar um nome de país, devemos 
+8 - Altere o endpoint. Permita ao usuário, opcionalmente, colocar um nome de país. Se ele colocar um nome de país, devemos 
 chamar o parceiro com um endpoint passando o nome do país, para retornar somente os dados daquele país ao invés de retornar
 os dados do mundo todo.
 
-9. Crie um endpoint para buscar no parceiro informações de continente. O endpoint deve ser novo e deve armazenar em uma
+9 - Crie um endpoint para buscar no parceiro informações de continente. O endpoint deve ser novo e deve armazenar em uma
 tabela separada chamada de `continent`. Se o usuário tentar um continente que não existe, crie as informações aleatoriamente,
 insira as informações no banco de dados e retorne o resultado.
 
-10. Desenvolva um endpoint para criar informações de covid e salvar no banco de dados. Ele deve funcionar da seguinte forma:
-- Deve ser um endpoint POST, com o corpo com os dados `country`, `cases`, `death`, `recovered`, `population`. Colocar
+10 - Desenvolva um endpoint para criar informações de covid e salvar no banco de dados. Ele deve funcionar da seguinte forma:
+* Deve ser um endpoint POST, com o corpo com os dados `country`, `cases`, `death`, `recovered`, `population`. Colocar
 validações para não inserir valores nulos, acima de zero para os campos numéricos e com o mínimo de 1 caractere para o
 campo `country`.
-- Ao acionar o endpoint, bata no endpoint do parceiro, cheque se o país inserido em `country` existe e pegue os dados
+* Ao acionar o endpoint, bata no endpoint do parceiro, cheque se o país inserido em `country` existe e pegue os dados
 do parceiro. Some os dados retornados pelo parceiro aos dados inseridos pelo usuário, pra cada campo. Salve cada campo
 somado no banco de dados.
