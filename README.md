@@ -17,6 +17,7 @@ These additional references should also help you:
 ### Project Info
 
 #### Included on project
+* Gradle
 * Spring boot and related (data, security etc)
 * Flyway
 * JDBI
@@ -73,3 +74,6 @@ campo `country`.
 * Ao acionar o endpoint, bata no endpoint do parceiro, cheque se o país inserido em `country` existe e pegue os dados
 do parceiro. Some os dados retornados pelo parceiro aos dados inseridos pelo usuário, pra cada campo. Salve cada campo
 somado no banco de dados.
+
+**Observação**: Se quiser, altere, incremente, remova e faça as alterações que julgar interessante ou úteis.
+É permitido até mesmo mudar um framework do projeto.
