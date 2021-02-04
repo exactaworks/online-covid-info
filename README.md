@@ -32,7 +32,7 @@ These additional references should also help you:
 * Check the result
 
 ### Activities (pt-BR)
-O projeto parece não estar funcionando muito bem. As primeiras 4 primeiras questões são relacionadas a isso.
+O projeto parece não estar funcionando muito bem. As primeiras 4 primeiras questões são relacionadas a isso. Execute-as na ordem que estão determinadas abaixo:
 
 1 - O projeto não tem tratamento de exceção algum. Ao executar o endpoint pela primeira vez por exemplo, ele tras o
  objeto de response todo NULL. Que tal tratarmos esse e todos os erros que pode haver no sistema?
@@ -47,7 +47,7 @@ da resposta do parceiro?
 as atividades?
 
 **O projeto agora deve estar com tratamentos de exceção, logs e funcionando adequadamente, inclusive o teste. 
-As 4 próximas questões são features adicionais ao projeto e podem ser realizadas em qualquer ordem.**
+As próximas questões são features adicionais ao projeto e podem ser realizadas em qualquer ordem.**
 
 5 - Sempre ao executar o endpoint, salvamos a requisição no banco de dados. Contudo, os dados do parceiro são atualizados
 diariamente. Então é desnecessário salvar no banco de dados se a requisição daquele dia já estiver no banco de dados para
