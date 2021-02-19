@@ -4,8 +4,6 @@ import br.com.online.covid.info.api.controller.response.DiseaseResponse;
 import br.com.online.covid.info.api.mapper.DiseaseMapper;
 import br.com.online.covid.info.api.repository.DiseaseRepository;
 import br.com.online.covid.info.api.service.partner.NovelCovidApi;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,8 +11,6 @@ import java.util.Optional;
 
 @Service
 public class DiseaseService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(DiseaseService.class);
 
     private final NovelCovidApi novelCovidApi;
 
