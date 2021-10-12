@@ -2,6 +2,9 @@ package br.com.online.covid.info.api.controller;
 
 import br.com.online.covid.info.api.controller.response.DiseaseResponse;
 import br.com.online.covid.info.api.service.DiseaseService;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +22,15 @@ public class DiseaseController {
     }
 
     @GetMapping
-    public Optional<DiseaseResponse> findWorldDisease() {
-        return diseaseService.findWorldDisease();
+    public ResponseEntity<DiseaseResponse> findWorldDisease() {
+
+        Optional<DiseaseResponse> optionalDiseaseResponse = diseaseService.findWorldDisease();
+
+        if (optionalDiseaseResponse.isPresent()){
+            return new ResponseEntity<>(optionalDiseaseResponse.get(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

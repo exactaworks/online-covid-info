@@ -1,0 +1,1 @@
+ALTER TABLE covid ALTER COLUMN `population` bigint DEFAULT 0;

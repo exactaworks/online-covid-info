@@ -47,9 +47,17 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-core:2.+'
 
+    //LOMBOK
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
 
 wrapper {
     gradleVersion = '6.2.2'
     distributionType = Wrapper.DistributionType.ALL
+}
+
+test {
+  testLogging.showStandardStreams = true
+  testLogging.exceptionFormat = 'full'
 }

@@ -15,7 +15,7 @@ public class DiseaseMapper {
         covidEntity.setCases(Integer.parseInt(novelResponse.getCases()));
         covidEntity.setCountry("world");
         covidEntity.setDate(LocalDateTime.now());
-        covidEntity.setDeath(Integer.parseInt(novelResponse.getCases()));
+        covidEntity.setDeath(Integer.parseInt(novelResponse.getDeaths()));
         covidEntity.setPopulation(Long.parseLong(novelResponse.getPopulation()));
         covidEntity.setRecovered(Integer.parseInt(novelResponse.getRecovered()));
         return covidEntity;

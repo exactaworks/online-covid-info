@@ -1,10 +1,13 @@
 package br.com.online.covid.info.api.service;
 
-import br.com.online.covid.info.api.controller.response.DiseaseResponse;
-import br.com.online.covid.info.api.mapper.DiseaseMapper;
-import br.com.online.covid.info.api.repository.DiseaseRepository;
-import br.com.online.covid.info.api.service.partner.NovelCovidApi;
-import br.com.online.covid.info.api.service.partner.response.NovelResponse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
+import org.jdbi.v3.core.Jdbi;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +15,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Optional;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
+import br.com.online.covid.info.api.controller.response.DiseaseResponse;
+import br.com.online.covid.info.api.mapper.DiseaseMapper;
+import br.com.online.covid.info.api.repository.DiseaseRepository;
+import br.com.online.covid.info.api.service.partner.NovelCovidApi;
+import br.com.online.covid.info.api.service.partner.response.NovelResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DiseaseServiceTest {
@@ -24,6 +28,9 @@ public class DiseaseServiceTest {
     private NovelCovidApi novelCovidApi;
 
     @Mock
+    private Jdbi jdbi;
+
+    @InjectMocks
     private DiseaseRepository diseaseRepository;
 
     @InjectMocks
@@ -31,6 +38,7 @@ public class DiseaseServiceTest {
 
     @Before
     public void init() {
+        diseaseRepository = new DiseaseRepository(jdbi);
         diseaseService = new DiseaseService(novelCovidApi, diseaseRepository, new DiseaseMapper());
     }
 
