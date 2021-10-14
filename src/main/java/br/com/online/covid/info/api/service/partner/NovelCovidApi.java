@@ -21,10 +21,18 @@ public class NovelCovidApi extends NovelCovidGenerics {
         super(client, mapper);
     }
 
-    public Optional<NovelResponse> findWorldDisease() {
+    public Optional<NovelResponse> findWorldDisease(Optional<String> country) {
+
+        String url;
+
+        if(country.isPresent()){
+            url = String.format("%s/%s/%s", host, countries, country.get());
+        } else {
+            url = String.format("%s/%s", host, findAll);
+        }
 
         Request request = new Request.Builder()
-                .url(String.format("%s/%s", host, findAll))
+                .url(url)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {

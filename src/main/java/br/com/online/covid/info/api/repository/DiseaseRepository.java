@@ -1,36 +1,20 @@
 package br.com.online.covid.info.api.repository;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.List;
 
-import org.jdbi.v3.core.Jdbi;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import br.com.online.covid.info.api.entity.CovidEntity;
-import lombok.extern.slf4j.Slf4j;
-@Slf4j
+
 @Repository
-public class DiseaseRepository extends BaseRepository {
+public interface DiseaseRepository extends JpaRepository<CovidEntity, String> {
 
-    public DiseaseRepository(Jdbi jdbi) {
-        super(jdbi);
-    }
+    @Query(value = "SELECT * FROM covid c WHERE FORMATDATETIME(date, 'yyyy-MM-dd') = ?1 AND country = ?2", nativeQuery = true)
+    List<CovidEntity> findByDateAndCountry(LocalDate date, String country);
 
-    public Optional<CovidEntity> save(CovidEntity entity) {
-
-        entity.setId(UUID.randomUUID().toString());
-
-        try {
-            jdbi.inTransaction(handle ->
-                handle.createUpdate(sqlLocator.locate("db.sql.save-covid"))
-                    .bindBean(entity)
-                    .execute());
-            return Optional.of(entity);
-        }catch(Exception e) {
-            log.error(String.format("save method error: %s", e.getLocalizedMessage()));
-        }
-
-        return Optional.empty();
-    }
-
+    List<CovidEntity> deleteByCountry(String country);
+    
 }

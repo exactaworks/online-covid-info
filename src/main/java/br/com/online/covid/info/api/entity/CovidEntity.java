@@ -2,82 +2,37 @@ package br.com.online.covid.info.api.entity;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.Data;
+
+@Entity
+@Table(name = "covid")
+@Data
 public class CovidEntity {
 
+    @Id
+    @Column
     private String id;
+
+    @Column
     private LocalDateTime date;
+
+    @Column
     private String country;
+
+    @Column
     private Integer cases;
+
+    @Column
     private Integer death;
+
+    @Column
     private Integer recovered;
+
+    @Column
     private Long population;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public Integer getCases() {
-        return cases;
-    }
-
-    public void setCases(Integer cases) {
-        this.cases = cases;
-    }
-
-    public Integer getDeath() {
-        return death;
-    }
-
-    public void setDeath(Integer death) {
-        this.death = death;
-    }
-
-    public Integer getRecovered() {
-        return recovered;
-    }
-
-    public void setRecovered(Integer recovered) {
-        this.recovered = recovered;
-    }
-
-    public Long getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(Long population) {
-        this.population = population;
-    }
-
-    @Override
-    public String toString() {
-        return "CovidEntity{" +
-                "id='" + id + '\'' +
-                ", date=" + date +
-                ", country='" + country + '\'' +
-                ", cases=" + cases +
-                ", death=" + death +
-                ", recovered=" + recovered +
-                ", population=" + population +
-                '}';
-    }
 }

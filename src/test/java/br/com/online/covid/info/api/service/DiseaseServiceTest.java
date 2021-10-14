@@ -18,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import br.com.online.covid.info.api.controller.response.DiseaseResponse;
 import br.com.online.covid.info.api.mapper.DiseaseMapper;
 import br.com.online.covid.info.api.repository.DiseaseRepository;
+import br.com.online.covid.info.api.repository.DiseaseRepository;
 import br.com.online.covid.info.api.service.partner.NovelCovidApi;
 import br.com.online.covid.info.api.service.partner.response.NovelResponse;
 
@@ -30,7 +31,7 @@ public class DiseaseServiceTest {
     @Mock
     private Jdbi jdbi;
 
-    @InjectMocks
+    @Mock
     private DiseaseRepository diseaseRepository;
 
     @InjectMocks
@@ -38,13 +39,12 @@ public class DiseaseServiceTest {
 
     @Before
     public void init() {
-        diseaseRepository = new DiseaseRepository(jdbi);
         diseaseService = new DiseaseService(novelCovidApi, diseaseRepository, new DiseaseMapper());
     }
 
     @Test
     public void shouldAccessClientAndSaveAndReturnSuccess() {
-        when(novelCovidApi.findWorldDisease()).thenReturn(Optional.of(novelResponse()));
+        when(novelCovidApi.findWorldDisease(Optional.empty())).thenReturn(Optional.of(novelResponse()));
 
         Optional<DiseaseResponse> diseaseResponse = diseaseService.findWorldDisease();
 
