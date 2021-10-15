@@ -1,16 +1,20 @@
 package br.com.online.covid.info.api.config;
 
+import java.util.concurrent.TimeUnit;
+
+import javax.sql.DataSource;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import okhttp3.OkHttpClient;
+
 import org.jdbi.v3.core.Handles;
 import org.jdbi.v3.core.Jdbi;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-import javax.sql.DataSource;
-import java.util.concurrent.TimeUnit;
+import okhttp3.OkHttpClient;
 
 @Configuration
 public class ProjectConfig {
@@ -35,5 +39,10 @@ public class ProjectConfig {
         jdbi.getConfig(Handles.class).setForceEndTransactions(false);
         return jdbi;
     }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+}
 
 }

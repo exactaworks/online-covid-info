@@ -36,7 +36,16 @@ public class NovelCovidApi extends NovelCovidGenerics {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            return Optional.of(mapper.readValue(Objects.requireNonNull(response.body()).string(), NovelResponse.class));
+
+            NovelResponse novelResponse = mapper.readValue(Objects.requireNonNull(response.body()).string(), NovelResponse.class);
+
+
+            if(novelResponse.getPopulation() == null) {
+                return Optional.empty();
+            }
+
+            return Optional.of(novelResponse);
+
         } catch (Exception e) {
             log.error(String.format("findWorldDisease method error: %s", e.getLocalizedMessage()));
         }

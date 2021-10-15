@@ -1,6 +1,6 @@
 package br.com.online.covid.info.api.service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,15 +8,19 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.online.covid.info.api.controller.response.DiseaseResponse;
 import br.com.online.covid.info.api.entity.CovidEntity;
+import br.com.online.covid.info.api.entity.dto.CovidEntityDTO;
 import br.com.online.covid.info.api.mapper.DiseaseMapper;
 import br.com.online.covid.info.api.repository.DiseaseRepository;
 import br.com.online.covid.info.api.service.partner.NovelCovidApi;
+import br.com.online.covid.info.api.service.partner.response.NovelResponse;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -29,6 +33,9 @@ public class DiseaseService {
     private final DiseaseMapper mapper;
 
     private final DiseaseRepository diseaseRepository;
+
+    @Autowired
+    ModelMapper modelMapper;
 
     public DiseaseService(NovelCovidApi novelCovidApi, DiseaseRepository diseaseRepository, DiseaseMapper diseaseMapper) {
         this.novelCovidApi = novelCovidApi;
@@ -63,8 +70,7 @@ public class DiseaseService {
         entity.setId(UUID.randomUUID().toString());
 
         try {
-            List<CovidEntity> listCovidEntity = 
-                diseaseRepository
+            List<CovidEntity> listCovidEntity = diseaseRepository
                     .findByDateAndCountry(entity.getDate().toLocalDate(),
                                           entity.getCountry());
 
@@ -73,7 +79,7 @@ public class DiseaseService {
             }
             return Optional.of(entity);
         }catch(Exception e) {
-            log.error(String.format("save method error: %s", e.getLocalizedMessage()));
+            log.error(String.format("saveIfNotRepeated method error: %s", e.getLocalizedMessage()));
         }
 
         return Optional.empty();
@@ -83,5 +89,55 @@ public class DiseaseService {
         return diseaseRepository.findAll(pageable);
     }
 
+    @Transactional
+    public Optional<CovidEntity> postAddPartner(CovidEntityDTO covidEntityDTO) {
+        
+        try {
+
+            Optional<NovelResponse> optionalNovelResponse = novelCovidApi
+                .findWorldDisease(Optional.of(covidEntityDTO.getCountry().toLowerCase()));
+
+
+            if(optionalNovelResponse.isPresent()){
+
+                Optional<CovidEntity> optionalPartnerCovidEntity = optionalNovelResponse.map(mapper::toEntity);
+
+                if(optionalPartnerCovidEntity.isEmpty()){
+                    return Optional.empty();
+                }
+
+                CovidEntity partnerCovidEntity = optionalPartnerCovidEntity.get();
+                
+                diseaseRepository
+                    .deleteByDateAndCountry(partnerCovidEntity.getDate().toLocalDate(), 
+                                            partnerCovidEntity.getCountry());
+                
+                partnerCovidEntity = addCovidEntityDTOWithPartnerCovidEntity(covidEntityDTO, partnerCovidEntity);
+
+                return Optional.of(diseaseRepository.save(partnerCovidEntity));
+            } else {
+                CovidEntity persistentCovidEntity = modelMapper.map(covidEntityDTO, CovidEntity.class);
+
+                persistentCovidEntity.setId(UUID.randomUUID().toString());
+                persistentCovidEntity.setDate(LocalDateTime.now());
+                return Optional.of(diseaseRepository.save(persistentCovidEntity));
+            }
+        
+        } catch(Exception e) {
+            log.error(String.format("postAddPartner method error: %s", e.getLocalizedMessage()));
+        }
+
+        return Optional.empty();
+    }
+
+    private CovidEntity addCovidEntityDTOWithPartnerCovidEntity(CovidEntityDTO covidEntityDTO, CovidEntity partnerCovidEntity) {
+        partnerCovidEntity.setId(UUID.randomUUID().toString());
+        partnerCovidEntity.setCases(partnerCovidEntity.getCases() + covidEntityDTO.getCases());
+        partnerCovidEntity.setDeath(partnerCovidEntity.getDeath() + covidEntityDTO.getDeath());
+        partnerCovidEntity.setPopulation(partnerCovidEntity.getPopulation() + covidEntityDTO.getPopulation());
+        partnerCovidEntity.setRecovered(partnerCovidEntity.getRecovered() + covidEntityDTO.getRecovered());
+
+        return partnerCovidEntity;
+    }
 
 }

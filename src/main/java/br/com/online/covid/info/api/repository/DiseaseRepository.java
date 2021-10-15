@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,7 @@ public interface DiseaseRepository extends JpaRepository<CovidEntity, String> {
 
     List<CovidEntity> deleteByCountry(String country);
     
+    @Modifying
+    @Query(value = "DELETE FROM covid c WHERE FORMATDATETIME(date, 'yyyy-MM-dd') = ?1 AND country = ?2", nativeQuery = true)
+    Integer deleteByDateAndCountry(LocalDate date, String country);
 }
