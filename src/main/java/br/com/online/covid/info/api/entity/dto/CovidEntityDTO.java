@@ -15,7 +15,7 @@ public class CovidEntityDTO {
     private String country;
 
     @Min(0)
-    @NotNull(message = "Cases is mandatory")
+    @NotNull(message = "Cases are mandatory")
     private Integer cases;
 
     @Min(0)

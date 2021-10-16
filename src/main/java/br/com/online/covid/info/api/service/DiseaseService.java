@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -15,11 +16,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.online.covid.info.api.controller.response.DiseaseResponse;
+import br.com.online.covid.info.api.entity.ContinentCovidEntity;
 import br.com.online.covid.info.api.entity.CovidEntity;
 import br.com.online.covid.info.api.entity.dto.CovidEntityDTO;
 import br.com.online.covid.info.api.mapper.DiseaseMapper;
+import br.com.online.covid.info.api.repository.ContinentCovidEntityRepository;
 import br.com.online.covid.info.api.repository.DiseaseRepository;
 import br.com.online.covid.info.api.service.partner.NovelCovidApi;
+import br.com.online.covid.info.api.service.partner.response.ContinentCovidResponse;
 import br.com.online.covid.info.api.service.partner.response.NovelResponse;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,6 +37,11 @@ public class DiseaseService {
     private final DiseaseMapper mapper;
 
     private final DiseaseRepository diseaseRepository;
+
+    private Random random = new Random(); 
+
+    @Autowired
+    ContinentCovidEntityRepository continentCovidEntityRepository;
 
     @Autowired
     ModelMapper modelMapper;
@@ -138,6 +147,29 @@ public class DiseaseService {
         partnerCovidEntity.setRecovered(partnerCovidEntity.getRecovered() + covidEntityDTO.getRecovered());
 
         return partnerCovidEntity;
+    }
+
+    public ContinentCovidEntity findContinentDisease(String continent) {
+
+        Optional<ContinentCovidResponse> continentCovidResponse = novelCovidApi.findContinentDisease(continent);
+
+        ContinentCovidEntity continentCovidEntity = new ContinentCovidEntity();
+
+        if(continentCovidResponse.isPresent()){
+            continentCovidEntity = modelMapper.map(continentCovidResponse.get(), ContinentCovidEntity.class);
+        } else {
+            continentCovidEntity.setContinent(continent);
+            continentCovidEntity.setCases(random.nextInt(100000));
+            continentCovidEntity.setDeaths(random.nextInt(10000));
+            continentCovidEntity.setPopulation(random.nextInt(1000000));
+            continentCovidEntity.setRecovered(random.nextInt(1000000));
+        }
+
+
+        continentCovidEntity.setId(UUID.randomUUID().toString());
+        continentCovidEntity.setDate(LocalDateTime.now());
+
+        return continentCovidEntityRepository.save(continentCovidEntity);
     }
 
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.online.covid.info.api.controller.response.DiseaseResponse;
+import br.com.online.covid.info.api.entity.ContinentCovidEntity;
 import br.com.online.covid.info.api.entity.CovidEntity;
 import br.com.online.covid.info.api.entity.dto.CovidEntityDTO;
 import br.com.online.covid.info.api.service.DiseaseService;
@@ -43,6 +44,11 @@ public class DiseaseController {
         }
 
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping("/continent")
+    public ResponseEntity<ContinentCovidEntity> findContinentDisease(@RequestParam String continent) {
+        return new ResponseEntity<>(diseaseService.findContinentDisease(continent), HttpStatus.OK);
     }
 
     @DeleteMapping

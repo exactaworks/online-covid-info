@@ -18,7 +18,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import br.com.online.covid.info.api.controller.response.DiseaseResponse;
 import br.com.online.covid.info.api.mapper.DiseaseMapper;
 import br.com.online.covid.info.api.repository.DiseaseRepository;
-import br.com.online.covid.info.api.repository.DiseaseRepository;
 import br.com.online.covid.info.api.service.partner.NovelCovidApi;
 import br.com.online.covid.info.api.service.partner.response.NovelResponse;
 
