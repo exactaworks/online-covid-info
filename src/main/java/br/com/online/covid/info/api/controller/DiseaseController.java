@@ -48,7 +48,15 @@ public class DiseaseController {
 
     @GetMapping("/continent")
     public ResponseEntity<ContinentCovidEntity> findContinentDisease(@RequestParam String continent) {
-        return new ResponseEntity<>(diseaseService.findContinentDisease(continent), HttpStatus.OK);
+
+        Optional<ContinentCovidEntity> optionalContinentCovidEntity = 
+            diseaseService.findContinentDisease(continent);
+
+        if(optionalContinentCovidEntity.isPresent()){
+            return new ResponseEntity<>(optionalContinentCovidEntity.get(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping

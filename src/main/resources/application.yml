@@ -34,3 +34,4 @@ partner:
   endpoints:
     all: all
     countries: countries
+    continents: continents

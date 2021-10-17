@@ -53,6 +53,9 @@ public class DiseaseService {
     }
 
     public Optional<DiseaseResponse> findWorldDisease(Optional<String> country) {
+
+        log.debug(String.format("findWorldDisease method country: %s", country));
+
         return novelCovidApi.findWorldDisease(country)
                 .map(mapper::toEntity)
                 .flatMap(this::saveIfNotRepeated)
@@ -65,6 +68,9 @@ public class DiseaseService {
 
     @Transactional
     public List<CovidEntity> deleteByCountry(String country){
+
+        log.debug(String.format("postAddPartner method country: %s", country));
+
         try {
             return diseaseRepository.deleteByCountry(country);
         } catch(Exception e) {
@@ -76,9 +82,11 @@ public class DiseaseService {
 
     public Optional<CovidEntity> saveIfNotRepeated(CovidEntity entity) {
 
-        entity.setId(UUID.randomUUID().toString());
+        log.debug(String.format("saveIfNotRepeated method entity: %s", entity));
 
         try {
+            entity.setId(UUID.randomUUID().toString());
+
             List<CovidEntity> listCovidEntity = diseaseRepository
                     .findByDateAndCountry(entity.getDate().toLocalDate(),
                                           entity.getCountry());
@@ -100,6 +108,8 @@ public class DiseaseService {
 
     @Transactional
     public Optional<CovidEntity> postAddPartner(CovidEntityDTO covidEntityDTO) {
+
+        log.debug(String.format("postAddPartner method covidEntityDTO: %s", covidEntityDTO));
         
         try {
 
@@ -139,6 +149,34 @@ public class DiseaseService {
         return Optional.empty();
     }
 
+    public Optional<ContinentCovidEntity> findContinentDisease(String continent) {
+
+        log.debug(String.format("findContinentDisease method continent: %s", continent));
+
+        try{
+
+            Optional<ContinentCovidResponse> continentCovidResponse = novelCovidApi.findContinentDisease(continent);
+
+            ContinentCovidEntity continentCovidEntity = new ContinentCovidEntity();
+
+            if(continentCovidResponse.isPresent()){
+                continentCovidEntity = modelMapper.map(continentCovidResponse.get(), ContinentCovidEntity.class);
+            } else {
+                generateFakeData(continent, continentCovidEntity);
+            }
+
+            continentCovidEntity.setId(UUID.randomUUID().toString());
+            continentCovidEntity.setDate(LocalDateTime.now());
+
+            return Optional.of(continentCovidEntityRepository.save(continentCovidEntity));
+        
+        } catch (Exception e) {
+            log.error(String.format("findContinentDisease method error: %s", e.getLocalizedMessage()));
+        }
+
+        return Optional.empty();
+    }
+
     private CovidEntity addCovidEntityDTOWithPartnerCovidEntity(CovidEntityDTO covidEntityDTO, CovidEntity partnerCovidEntity) {
         partnerCovidEntity.setId(UUID.randomUUID().toString());
         partnerCovidEntity.setCases(partnerCovidEntity.getCases() + covidEntityDTO.getCases());
@@ -149,27 +187,12 @@ public class DiseaseService {
         return partnerCovidEntity;
     }
 
-    public ContinentCovidEntity findContinentDisease(String continent) {
-
-        Optional<ContinentCovidResponse> continentCovidResponse = novelCovidApi.findContinentDisease(continent);
-
-        ContinentCovidEntity continentCovidEntity = new ContinentCovidEntity();
-
-        if(continentCovidResponse.isPresent()){
-            continentCovidEntity = modelMapper.map(continentCovidResponse.get(), ContinentCovidEntity.class);
-        } else {
-            continentCovidEntity.setContinent(continent);
-            continentCovidEntity.setCases(random.nextInt(100000));
-            continentCovidEntity.setDeaths(random.nextInt(10000));
-            continentCovidEntity.setPopulation(random.nextInt(1000000));
-            continentCovidEntity.setRecovered(random.nextInt(1000000));
-        }
-
-
-        continentCovidEntity.setId(UUID.randomUUID().toString());
-        continentCovidEntity.setDate(LocalDateTime.now());
-
-        return continentCovidEntityRepository.save(continentCovidEntity);
+    private void generateFakeData(String continent, ContinentCovidEntity continentCovidEntity) {
+        continentCovidEntity.setContinent(continent);
+        continentCovidEntity.setCases(random.nextInt(100000));
+        continentCovidEntity.setDeaths(random.nextInt(10000));
+        continentCovidEntity.setPopulation(random.nextInt(1000000));
+        continentCovidEntity.setRecovered(random.nextInt(1000000));
     }
 
 }

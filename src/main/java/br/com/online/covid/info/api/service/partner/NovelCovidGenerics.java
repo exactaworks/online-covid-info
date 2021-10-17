@@ -25,5 +25,8 @@ public class NovelCovidGenerics {
     @Value("${partner.endpoints.countries}")
     protected String countries;
 
+    @Value("${partner.endpoints.continents}")
+    protected String continents;
+
 
 }

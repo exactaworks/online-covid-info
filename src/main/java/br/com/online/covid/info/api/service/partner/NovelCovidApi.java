@@ -59,7 +59,7 @@ public class NovelCovidApi extends NovelCovidGenerics {
 
         try{
 
-            String url = String.format("https://disease.sh/v3/covid-19/continents/%s", continent);
+            String url = String.format("%s/%s/%s",host, continents, continent);
 
             RestTemplate restTemplate = new RestTemplate();
 
