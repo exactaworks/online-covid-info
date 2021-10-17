@@ -1,3 +1,44 @@
+# Considerações
+
+### Principais Alterações
+
+* A classe `DiseaseRepository` foi substituida pela interface `JPARepository` 
+  que expõe altomaticamente metodos CRUD e permite criar novos métodos apenas usando
+  uma sintaxe padrão;
+
+* Desse modo, eventuais regras de negócio que residiam no `DiseaseRepository` foram
+  transferiadas para o `DiseaseService`, local mais adequado para tratamento de exceções,
+  logs, verificações se o dado já exsite, etc;
+
+* Isso resolveu o teste, uma vez que  objeto `jdbi` deixou de ser uma dependência do
+  `DiseaseRepository`;
+
+* Foi utlizada a classe `ModelMapper` para mapeamento entre objetos do tipo entity, DTO,
+  etc; Deixei o mapper original por conveniência;
+
+* Uso extensivo da dependência `Lombok` para gerar getters, setters, métodos `toString()`,
+  etc; além de injeção de objeto de log com a anotação `@Slf4j`;
+
+* Anotações do tipo `@Entity` e `@Table` para facilitar o ORM de modo geral, especialmente
+  do `JPARepository`.
+
+### Pontos de Melhorias 
+
+Esses pontos de modo geral são provenientes de limitações de tempo e disponibilidade
+que tive durante a semana; o foco foi terminar o projeto cumprindo as especificações.
+Num cenário do mundo real, as melhorias listadas abaixo trariam mais governança para o
+código:
+
+* O tratamento de exceções foi feito de maneira bem simplificada; simplesmente voltando
+  `INTERNAL SERVER ERROR` ou `BAD REQUEST` quando convém. Embora isso seja uma boa prática
+  do ponto de vista de segurança ([OWASP Improper Error Handling](https://owasp.org/www-community/Improper_Error_Handling)),
+  as mensagens poderiam ser um pouco mais customizadas;
+
+* Os logs logam os dados de entrada e os erros provenientes dos métodos do `DiseaseService`;
+  mais logs não fariam mal.
+
+* Criar testes para todos os endpoints.
+
 # Getting Started
 
 ### Reference Documentation

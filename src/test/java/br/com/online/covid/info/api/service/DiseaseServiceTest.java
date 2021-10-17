@@ -28,9 +28,6 @@ public class DiseaseServiceTest {
     private NovelCovidApi novelCovidApi;
 
     @Mock
-    private Jdbi jdbi;
-
-    @Mock
     private DiseaseRepository diseaseRepository;
 
     @InjectMocks
