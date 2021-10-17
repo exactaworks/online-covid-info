@@ -69,12 +69,12 @@ public class DiseaseService {
     @Transactional
     public List<CovidEntity> deleteByCountry(String country){
 
-        log.debug(String.format("postAddPartner method country: %s", country));
+        log.debug(String.format("deleteByCountry method country: %s", country));
 
         try {
             return diseaseRepository.deleteByCountry(country);
         } catch(Exception e) {
-            log.error(String.format("delete method error: %s", e.getLocalizedMessage()));
+            log.error(String.format("deleteByCountry method error: %s", e.getLocalizedMessage()));
         }
 
         return new ArrayList<>();
