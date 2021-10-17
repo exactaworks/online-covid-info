@@ -42,14 +42,25 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.1'
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     implementation 'org.json:json:20190722'
+    implementation 'org.modelmapper:modelmapper:2.1.1'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:2.5.5'
+
 
     // TESTS
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-core:2.+'
 
+    //LOMBOK
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 }
 
 wrapper {
     gradleVersion = '6.2.2'
     distributionType = Wrapper.DistributionType.ALL
+}
+
+test {
+  testLogging.showStandardStreams = true
+  testLogging.exceptionFormat = 'full'
 }

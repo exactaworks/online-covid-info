@@ -9,10 +9,13 @@ import javax.persistence.Table;
 
 import lombok.Data;
 
+/**
+ * ContinentCovidEntity
+ */
 @Entity
-@Table(name = "covid")
+@Table(name = "continent")
 @Data
-public class CovidEntity {
+public class ContinentCovidEntity {
 
     @Id
     @Column
@@ -22,17 +25,18 @@ public class CovidEntity {
     private LocalDateTime date;
 
     @Column
-    private String country;
+    private String continent;
 
     @Column
     private Integer cases;
-
+   
     @Column
-    private Integer death;
+    private Integer deaths;
 
     @Column
     private Integer recovered;
 
     @Column
-    private Long population;
+    private Integer population;
+
 }

@@ -13,9 +13,13 @@ public class DiseaseMapper {
     public CovidEntity toEntity(NovelResponse novelResponse) {
         CovidEntity covidEntity = new CovidEntity();
         covidEntity.setCases(Integer.parseInt(novelResponse.getCases()));
-        covidEntity.setCountry("world");
+        if(novelResponse.getCountry() == null){
+            covidEntity.setCountry("world");
+        } else {
+            covidEntity.setCountry(novelResponse.getCountry());
+        }
         covidEntity.setDate(LocalDateTime.now());
-        covidEntity.setDeath(Integer.parseInt(novelResponse.getCases()));
+        covidEntity.setDeath(Integer.parseInt(novelResponse.getDeaths()));
         covidEntity.setPopulation(Long.parseLong(novelResponse.getPopulation()));
         covidEntity.setRecovered(Integer.parseInt(novelResponse.getRecovered()));
         return covidEntity;
